@@ -368,6 +368,29 @@ class AiriConnector {
     })
   }
 
+  // Send speak:text event (for TTS + lip sync)
+  async speak(text, options = {}) {
+    if (!this.connected) {
+      console.error('Cannot send speak:text: not connected')
+      return false
+    }
+
+    const speakEvent = {
+      type: 'speak:text',
+      id: this.createEventId(),
+      timestamp: new Date().toISOString(),
+      source: this.identity,
+      data: {
+        text: text,
+        emotion: options.emotion || 'neutral',
+        speed: options.speed || 1.0
+      }
+    }
+
+    console.log('🎙️ Sending speak:text:', text.substring(0, 50))
+    return this.send(speakEvent)
+  }
+
   // Start test mode - send message every few seconds
   startTestMode(intervalMs = 5000) {
     if (this.testModeTimer) {
