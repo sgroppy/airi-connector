@@ -14,10 +14,9 @@
     "test": "node bin/airi-connect.js say 'Hello from OpenClaw!'"
   },
   "dependencies": {
-    "ws": "^8.14.2",
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.0",
+    "ws": "^8.19.0"
   },
-  "devDependencies": {},
   "keywords": [
     "openclaw",
     "airi",

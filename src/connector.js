@@ -142,6 +142,7 @@ class AiriConnector {
       timestamp: new Date().toISOString(),
       source: this.identity,
       data: {
+        name: this.identity.plugin.labels.name || 'OpenClaw Bridge',
         identity: this.identity,
         dependencies: [],
         configSchema: {
@@ -164,8 +165,19 @@ class AiriConnector {
 
   // Handle incoming messages
   handleMessage(data) {
+    // Skip empty messages
+    if (!data || data.trim() === '' || data === '{}') {
+      return
+    }
+    
     try {
       const event = JSON.parse(data)
+      
+      // Skip events without a type
+      if (!event || !event.type) {
+        return
+      }
+      
       console.log('📨 Received:', event.type)
       
       switch (event.type) {
@@ -196,6 +208,10 @@ class AiriConnector {
           if (event.data?.kind === 'ping') {
             this.sendHeartbeatPong()
           }
+          break
+          
+        case 'registry:modules:sync':
+          // Server sending module registry update, can ignore
           break
           
         case 'error':

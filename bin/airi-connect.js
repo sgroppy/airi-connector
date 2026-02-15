@@ -9,7 +9,7 @@
  *   airi-connect disconnect # Disconnect from AIRI
  */
 
-import { AiriConnector, loadConfig } from './connector.js'
+import { AiriConnector, loadConfig } from '../src/connector.js'
 
 const command = process.argv[2] || 'connect'
 const args = process.argv.slice(3)
