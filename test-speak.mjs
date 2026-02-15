@@ -77,7 +77,11 @@ ws.on('message', (data) => {
   if (!text || text === '{}' || text.trim() === '') return;
   
   try {
-    const event = JSON.parse(text);
+    let event = JSON.parse(text);
+    // Unwrap {json:{...}} format from server
+    if (event.json && typeof event.json === 'object') {
+      event = event.json;
+    }
     if (!event.type) return;
     
     // Skip routine events

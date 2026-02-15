@@ -174,7 +174,12 @@ class AiriConnector {
     }
     
     try {
-      const event = JSON.parse(data)
+      let event = JSON.parse(data)
+      
+      // Unwrap if server sends {json: {...}} format
+      if (event.json && typeof event.json === 'object') {
+        event = event.json
+      }
       
       // Skip events without a type
       if (!event || !event.type) {
