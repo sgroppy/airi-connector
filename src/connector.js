@@ -34,6 +34,7 @@ class AiriConnector {
     this.authenticated = false
     this.reconnectAttempts = 0
     this.heartbeatTimer = null
+    this.testModeTimer = null
     this.messageQueue = []
     this.eventListeners = new Map()
     
@@ -367,10 +368,52 @@ class AiriConnector {
     })
   }
 
+  // Start test mode - send message every few seconds
+  startTestMode(intervalMs = 5000) {
+    if (this.testModeTimer) {
+      console.log('Test mode already running')
+      return
+    }
+    
+    console.log(`🧪 Test mode started (sending every ${intervalMs}ms)`)
+    
+    const testMessages = [
+      'Hello Captain Lobster!',
+      'Testing speak:text event',
+      'Can you hear me?',
+      'Animation test!',
+      'OpenClaw to AIRI connection working!'
+    ]
+    
+    let msgIndex = 0
+    this.testModeTimer = setInterval(() => {
+      if (!this.connected) {
+        console.log('⚠️ Not connected, skipping test message')
+        return
+      }
+      
+      const text = testMessages[msgIndex % testMessages.length]
+      msgIndex++
+      
+      console.log(`🧪 Test: ${text}`)
+      this.speak(text, { emotion: 'happy' })
+    }, intervalMs)
+  }
+  
+  // Stop test mode
+  stopTestMode() {
+    if (this.testModeTimer) {
+      clearInterval(this.testModeTimer)
+      this.testModeTimer = null
+      console.log('🧪 Test mode stopped')
+    }
+  }
+
   // Disconnect
   disconnect() {
     this.autoReconnect = false
     this.stopHeartbeat()
+    this.stopTestMode()
     
     if (this.ws) {
       this.ws.close()
