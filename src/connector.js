@@ -6,6 +6,7 @@
  */
 
 import WebSocket from 'ws'
+import { stringify, parse } from 'superjson'
 import { readFileSync } from 'fs'
 import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
@@ -165,30 +166,21 @@ class AiriConnector {
 
   // Handle incoming messages
   handleMessage(data) {
-    // Log raw data for debugging
-    console.log('📥 Raw:', data.substring(0, 200))
-    
     // Skip empty messages
     if (!data || data.trim() === '' || data === '{}') {
       return
     }
     
     try {
-      let event = JSON.parse(data)
-      
-      // Unwrap if server sends {json: {...}} format
-      if (event.json && typeof event.json === 'object') {
-        event = event.json
-      }
+      // Use superjson to parse AIRI's format
+      let event = parse(data)
       
       // Skip events without a type
       if (!event || !event.type) {
-        console.log('⚠️  No event type:', data.substring(0, 100))
         return
       }
       
       console.log('📨 Event type:', event.type)
-      console.log('📋 Full event:', JSON.stringify(event, null, 2).substring(0, 500))
       
       switch (event.type) {
         case 'module:authenticated':
@@ -282,7 +274,8 @@ class AiriConnector {
     }
     
     try {
-      this.ws.send(JSON.stringify(event))
+      // Use superjson to match AIRI's expected format
+      this.ws.send(stringify(event))
       return true
     } catch (err) {
       console.error('Failed to send:', err.message)
