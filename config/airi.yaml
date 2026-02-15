@@ -1,0 +1,72 @@
+# AIRI Connector Configuration
+# Connection settings for Project AIRI desktop app
+
+version: "1.0"
+
+# AIRI WebSocket server connection
+airi:
+  # WebSocket URL for AIRI desktop app
+  # Default: ws://localhost:6121/ws
+  url: "ws://localhost:6121/ws"
+  
+  # Connection settings
+  connection:
+    autoConnect: true
+    autoReconnect: true
+    maxReconnectAttempts: -1  # -1 = unlimited
+    reconnectDelay: 1000  # Initial delay in ms (exponential backoff)
+    heartbeatInterval: 30000  # 30 seconds
+    
+  # Authentication (if AIRI requires token)
+  auth:
+    enabled: false
+    token: ""  # Set if AIRI requires authentication
+
+# Plugin identity for AIRI
+identity:
+  # Plugin ID - must be unique
+  pluginId: "openclaw-bridge"
+  
+  # Plugin name (shown in AIRI UI)
+  name: "OpenClaw Bridge"
+  
+  # Version
+  version: "1.0.0"
+  
+  # Description
+  description: "Bridge between OpenClaw and AIRI VTuber"
+
+# Character settings
+character:
+  # Character name (used in messages)
+  name: "Captain Lobster"
+  
+  # Voice settings
+  voice:
+    enabled: true
+    # If using ElevenLabs through AIRI
+    elevenlabsVoiceId: ""  # Optional: specific voice ID
+    
+  # Animation triggers
+  animation:
+    # Trigger speaking animation on message
+    speakOnMessage: true
+    
+    # Idle animations
+    idleEnabled: true
+
+# Message routing
+routing:
+  # Forward all OpenClaw messages to AIRI
+  autoForward: false
+  
+  # Only forward from specific channels (empty = all)
+  allowedChannels: []
+  
+  # Block specific channels
+  blockedChannels: []
+
+# Logging
+logging:
+  level: "info"  # debug, info, warn, error
+  logFile: "./logs/airi-connector.log"

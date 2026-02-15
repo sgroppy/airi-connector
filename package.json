@@ -1,0 +1,38 @@
+{
+  "name": "@expertclaw/airi-connector",
+  "version": "1.0.0",
+  "description": "OpenClaw skill to connect with Project AIRI VTuber platform",
+  "type": "module",
+  "main": "src/connector.js",
+  "bin": {
+    "airi-connect": "./bin/airi-connect.js"
+  },
+  "scripts": {
+    "start": "node bin/airi-connect.js",
+    "connect": "node bin/airi-connect.js connect",
+    "status": "node bin/airi-connect.js status",
+    "test": "node bin/airi-connect.js say 'Hello from OpenClaw!'"
+  },
+  "dependencies": {
+    "ws": "^8.14.2",
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "openclaw",
+    "airi",
+    "vtuber",
+    "vrm",
+    "ai",
+    "websocket"
+  ],
+  "author": "Expert Claw",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sgroppy/ExpertClaw-Butler"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
