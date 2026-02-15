@@ -165,6 +165,9 @@ class AiriConnector {
 
   // Handle incoming messages
   handleMessage(data) {
+    // Log raw data for debugging
+    console.log('📥 Raw:', data.substring(0, 200))
+    
     // Skip empty messages
     if (!data || data.trim() === '' || data === '{}') {
       return
@@ -175,10 +178,12 @@ class AiriConnector {
       
       // Skip events without a type
       if (!event || !event.type) {
+        console.log('⚠️  No event type:', data.substring(0, 100))
         return
       }
       
-      console.log('📨 Received:', event.type)
+      console.log('📨 Event type:', event.type)
+      console.log('📋 Full event:', JSON.stringify(event, null, 2).substring(0, 500))
       
       switch (event.type) {
         case 'module:authenticated':
