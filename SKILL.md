@@ -22,14 +22,18 @@ config:
   description: AIRI connection settings and character config
 
 commands:
-  airi:
-    description: Manage AIRI connection
-    subcommands:
-      - connect: Connect to AIRI desktop app
-      - disconnect: Disconnect from AIRI
-      - status: Show connection status
-      - say: Send a message to AIRI character
-      - config: Show current configuration
+  airi-speak:
+    description: Send text to AIRI for speech synthesis
+    usage: airi-speak "Hello world" [emotion] [speed]
+    examples:
+      - airi-speak "Hello everyone"
+      - airi-speak "Great job!" happy 1.2
+      - airi-speak "Processing..." neutral 0.8
+    script: ./bin/airi-speak.mjs
+    args:
+      - text: Message to speak (required)
+      - emotion: Emotion style (happy, neutral, excited, calm)
+      - speed: Speech speed multiplier (0.5 - 2.0)
 
 dependencies:
   - @proj-airi/server-sdk
